@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const articles = require('./api.route.articles.js');
+const articles = require('./api.route.articles');
 const comments = require('./api.route.comments');
 const topics = require('./api.route.topics');
 const users = require('./api.route.users');

@@ -1,8 +1,9 @@
+const express = require('express');
 const router = express.Router();
 
-const topicControl = require('../controllers/topic.controller');
+const topicControl = require('../controllers/topics.controller');
 
-router.get('/', topicControl.gettopics);
+router.get('/', topicControl.getTopics);
 
 //router.get('/:circuitId', circuitControl.getCircuitId);
 
