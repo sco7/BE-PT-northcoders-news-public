@@ -1,1 +1,1 @@
-require('./seed')('mongodb://localhost:27017/northcoders-news');
+//require('./seed')('mongodb://localhost:27017/northcoders-news');
