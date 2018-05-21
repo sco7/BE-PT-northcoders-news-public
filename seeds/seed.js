@@ -12,53 +12,68 @@ const {userData, articleData, commentData, topicData} = require(`./${process.env
 
 // seed function
 function seedDB (dbUrl) {
-const userIds = {}, articleIds = {}, commentIds = {}, topicIds = {};
 
-// connect to the database
-return mongoose.connect(dbUrl)
-.then(() => {
-    mongoose.connection.db.dropDatabase();
-})
+    // connect to the database
+    return mongoose.connect(dbUrl)
+    .then(() => {
 
-.then(() => {
+        // drop the existing database
+        mongoose.connection.db.dropDatabase();
+    })
 
-    //seed users
-    const userPromises = Object.keys(userData).map(user =>
-      new User(userData[user])
-        .save()
-        .then((doc) => {
-          userIds[user] = doc.id;
-          return doc;
-        })
-    );
+    .then(() => {
 
-    //seed topics
-    const topicPromises = Object.keys(topicData).map(topic =>
-      new Topic(topicData[topic])
-        .save()
-        .then((doc) => {
-          topicIds[topic] = doc.id;
-          return doc;
-        })
-    );
+        // seeds topics and users
+        return Promise.all([Topic.insertMany(topicData), User.insertMany(userData)]);
+    })
 
-    return Promise.all([
-        Promise.all(userPromises),
-        Promise.all(topicPromises),
-        //Promise.all(driverPromises),
-        //Promise.all(seasonPromises)
-      ]
-      )
-      .then(data => {
+    
+    .then(([topics, users]) => {
+        articleData.forEach(article => {
+
+        // replaces the hardcoded 'created_by' field with the relating users id from the User table
+        article.created_by = users.filter(user => user.username === article.created_by)[0]._id
+
+        // adds the 'belongs_to' field with the relating topic id from the Topic table
+        article.belongs_to = topics.filter(topic => topic.slug === article.topic)[0]._id
+    });
+        userCopy = users;
+
+        //seeds articles
+        return Article.insertMany(articleData)
+    })
+    
+
+    .then((articles) => {
+        commentData.forEach(comment => {
+        
+        //replaces the hardcoded 'created_by' field wth the relating users id from the User table
+        comment.created_by = userCopy.filter(user => user.username === comment.created_by)[0]._id
+
+        // replaces the 'belongs_to' field with the relating users id from the User table
+        comment.belongs_to = articles.filter(article => article.title === comment.belongs_to)[0]._id 
+    });
+
+        // seeds comments
+        return Comment.insertMany(commentData)
+    })
+
+    // disconnects from the database
+    .then(data => {
         console.log('db seeded!');
         mongoose.disconnect();
         console.log('db disconnected!');
         return data;
-      });
-  });
+    })
+
+    // error handling
+    .catch(err => {
+      console.log(err);
+  })
 }
 
+// run seed function
 seedDB(dbUrl);
 
-//module.exports = seedDB;
+module.exports = seedDB;
 
