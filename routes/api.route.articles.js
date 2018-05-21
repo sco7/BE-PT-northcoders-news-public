@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const articleControl = require('../controllers/articles.controller');
+const {getArticles, getCommentsByArticle, getArticleById} = require('../controllers/articles.controller');
 
-router.get('/', articleControl.getArticles);
+router.get('/', getArticles);
 
-//router.get('/:circuitId', circuitControl.getCircuitId);
+router.get('/:article_Id', getArticleById);
+
+router.get('/:article_Id/comments', getCommentsByArticle)
 
 module.exports = router;

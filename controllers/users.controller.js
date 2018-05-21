@@ -1,26 +1,26 @@
-const users = require('../models/User');
+const {User} = require('../models/index');
 
 //build functions
 
-function getUsers (req, res) {
-  circuits.find()
-    .then(users => {
-      return res.status(200).send(users);
+function getUsers (req, res, next) {
+  User.find()
+    .then(Users => {
+      return res.status(200).send(Users);
     })
     .catch(err => {
-      console.log(err);
+      return next({message: 'oops internal server error'})
     });
 }
 
-// function getCircuitId (req, res) {
-//   const circuitId = req.params.circuitId;
-//   circuits.findOne({_id: circuitId})
-//     .then(circuits => {
-//       return res.status(200).send(circuits);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// }
+function getUserProfile (req, res, next) {
+  const username = req.params.username;
+  User.find({username: username})
+    .then(Users => {
+      return res.status(200).send(Users);
+    })
+    .catch(err => {
+      return next({status: 404, message:err})
+    });
+}
 
-module.exports = { getUsers };
+module.exports = { getUsers, getUserProfile }; 

@@ -1,26 +1,26 @@
-const topics = require('../models/Topic');
+const {Topic, Article} = require('../models/index');
 
 //build functions
 
-function getTopics (req, res) {
-  topics.find()
-    .then(circuits => {
-      return res.status(200).send(topics);
+function getTopics (req, res, next) {
+  Topic.find()
+    .then(Topics => {
+      return res.status(200).send(Topics);
     })
     .catch(err => {
-      console.log(err);
+      return next({message: 'oops internal server error'})
     });
 }
 
-// function getCircuitId (req, res) {
-//   const circuitId = req.params.circuitId;
-//   circuits.findOne({_id: circuitId})
-//     .then(circuits => {
-//       return res.status(200).send(circuits);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// }
+function getArticlesByTopic (req, res, next) {
+  const topicId = req.params.topic_id;
+  Article.find({belongs_to: topicId})
+    .then(Articles => {
+      return res.status(200).send(Articles);
+    })
+    .catch(err => {
+      return next({status: 404, message:err})
+    });
+}
 
-module.exports = { getTopics };
+module.exports = { getTopics, getArticlesByTopic };

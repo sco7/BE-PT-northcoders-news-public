@@ -1,14 +1,14 @@
-const comments = require('../models/Comment');
+const {Comments} = require('../models/Comment');
 
 //build functions
 
-function getComments (req, res) {
-  circuits.find()
-    .then(comments => {
-      return res.status(200).send(comments);
+function getComments (req, res, next) {
+  Comments.find()
+    .then(Comments => {
+      return res.status(200).send(Comments);
     })
     .catch(err => {
-      console.log(err);
+      return next({message: 'oops internal server error'})
     });
 }
 

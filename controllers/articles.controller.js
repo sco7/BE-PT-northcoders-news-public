@@ -1,26 +1,38 @@
-const articles = require('../models/Article');
+const {Article, Comment} = require('../models/index');
 
 //build functions
 
-function getArticles (req, res) {
-  articles.find()
-    .then(articles => {
-      return res.status(200).send(articles);
+function getArticles (req, res, next) {
+  Article.find()
+    .then(Articles => {
+      return res.status(200).send(Articles);
     })
     .catch(err => {
-      console.log(err);
+      return next({message: 'oops internal server error'})
     });
 }
 
-// function getCircuitId (req, res) {
-//   const circuitId = req.params.circuitId;
-//   circuits.findOne({_id: circuitId})
-//     .then(circuits => {
-//       return res.status(200).send(circuits);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// }
+function getArticleById (req, res, next) {
+  const articleId = req.params.article_Id;
+  Article.findOne({_id: articleId})
+    .then(Articles => {
+      return res.status(200).send(Articles);
+    })
+    .catch(err => {
+      // validationError 
+      return next({status: 404, message:err})
+    });
+}
 
-module.exports = { getArticles };
+function getCommentsByArticle (req, res, next) {
+  const articleId = req.params.article_Id;
+  Comment.find({belongs_to: articleId})
+    .then(Comments => {
+      return res.status(200).send(Comments);
+    })
+    .catch(err => {
+      return next({status: 404, message:err})
+    });
+}
+
+module.exports = { getArticles, getArticleById, getCommentsByArticle };

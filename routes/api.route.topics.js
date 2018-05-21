@@ -5,6 +5,6 @@ const topicControl = require('../controllers/topics.controller');
 
 router.get('/', topicControl.getTopics);
 
-//router.get('/:circuitId', circuitControl.getCircuitId);
+router.get('/:topic_id/articles', topicControl.getArticlesByTopic);
 
 module.exports = router;

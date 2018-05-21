@@ -1,5 +1,3 @@
-// set the database to test or dev
-if (process.env.NODE_ENV !== 'test') process.env.NODE_ENV = 'dev';
 const dbUrl = `mongodb://localhost/northcoders-news-${process.env.NODE_ENV}`;
 
 // require mongoose to work with Promises
@@ -13,21 +11,15 @@ const {userData, articleData, commentData, topicData} = require(`./${process.env
 // seed function
 function seedDB (dbUrl) {
 
-    // connect to the database
-    return mongoose.connect(dbUrl)
-    .then(() => {
-
-        // drop the existing database
-        mongoose.connection.db.dropDatabase();
-    })
+    //drop the existing database
+    return mongoose.connection.db.dropDatabase()
 
     .then(() => {
 
         // seeds topics and users
-        return Promise.all([Topic.insertMany(topicData), User.insertMany(userData)]);
+        return Promise.all([Topic.insertMany(topicData), User.insertMany(userData)])
     })
 
-    
     .then(([topics, users]) => {
         articleData.forEach(article => {
 
@@ -37,18 +29,17 @@ function seedDB (dbUrl) {
         // adds the 'belongs_to' field with the relating topic id from the Topic table
         article.belongs_to = topics.filter(topic => topic.slug === article.topic)[0]._id
     });
-        userCopy = users;
 
-        //seeds articles
-        return Article.insertMany(articleData)
+        //seeds articles and returns users to use later
+        return Promise.all([Article.insertMany(articleData), users])
     })
     
 
-    .then((articles) => {
+    .then(([articles, users]) => {
         commentData.forEach(comment => {
         
         //replaces the hardcoded 'created_by' field wth the relating users id from the User table
-        comment.created_by = userCopy.filter(user => user.username === comment.created_by)[0]._id
+        comment.created_by = users.filter(user => user.username === comment.created_by)[0]._id
 
         // replaces the 'belongs_to' field with the relating users id from the User table
         comment.belongs_to = articles.filter(article => article.title === comment.belongs_to)[0]._id 
@@ -58,22 +49,10 @@ function seedDB (dbUrl) {
         return Comment.insertMany(commentData)
     })
 
-    // disconnects from the database
-    .then(data => {
-        console.log('db seeded!');
-        mongoose.disconnect();
-        console.log('db disconnected!');
-        return data;
-    })
-
     // error handling
     .catch(err => {
       console.log(err);
   })
 }
 
-// run seed function
-seedDB(dbUrl);
-
-module.exports = seedDB;
-
+module.exports = {seedDB};

@@ -5,6 +5,7 @@ const userControl = require('../controllers/users.controller');
 
 router.get('/', userControl.getUsers);
 
-//router.get('/:circuitId', circuitControl.getCircuitId);
+router.get('/:username', userControl.getUserProfile);
+
 
 module.exports = router;
