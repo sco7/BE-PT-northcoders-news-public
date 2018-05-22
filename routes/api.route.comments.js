@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const commentControl = require('../controllers/comments.controller');
+const { getComments } = require('../controllers/comments.controller');
 
-router.get('/', commentControl.getComments);
-
-//router.get('/:circuitId', circuitControl.getCircuitId);
+router.get('/', getComments);
 
 module.exports = router;
