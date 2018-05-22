@@ -15,8 +15,8 @@ function getArticles (req, res, next) {
 function getArticleById (req, res, next) {
   const articleId = req.params.article_Id;
   Article.findOne({ _id: articleId })
-    .then(Articles => {
-      return res.status(200).send(Articles);
+    .then(articles => {
+      return res.status(200).send(articles);
     })
     .catch(err => {
       // validationError 
@@ -27,8 +27,8 @@ function getArticleById (req, res, next) {
 function getCommentsByArticle (req, res, next) {
   const articleId = req.params.article_Id;
   Comment.find({ belongs_to: articleId })
-    .then(Comments => {
-      return res.status(200).send(Comments);
+    .then(comments => {
+      return res.status(200).send(comments);
     })
     .catch(err => {
       return next({ status: 404, message:err })
@@ -55,4 +55,21 @@ function postCommentToArticle (req, res, next) {
     })
 }
 
-module.exports = { getArticles, getArticleById, getCommentsByArticle, postCommentToArticle };
+function putArticleVotesById (req, res, next) {
+  const articleId = req.params.article_id;
+  let vote = req.query.vote;
+  let change = 0; 
+    if (vote === 'up') change = 1;
+    if (vote === 'down') change = -1;
+    Article.findByIdAndUpdate(
+      articleId, { $inc: { votes: change } }, { new: true })
+      .then(article => {
+        return res.status(200).send(article);
+      })
+      .catch(err => {
+        return next({ status: 404, message:err })
+      });
+}
+
+module.exports = { getArticles, getArticleById, getCommentsByArticle, 
+  postCommentToArticle, putArticleVotesById };
