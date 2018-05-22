@@ -19,7 +19,9 @@ function getArticlesByTopic (req, res, next) {
       return res.status(200).send(articles);
     })
     .catch(err => {
-      return next({ status: 404, message:err })
+      // CastError
+      if (err.name === 'CastError') 
+        return next({ status: 404, message: `Article with topic Id '${topicId}' could not be found` })
     });
 }
 
@@ -39,7 +41,9 @@ function postArticleToTopic (req, res, next) {
         return res.status(200).send(article);
       })
       .catch(err => {
-        return next({ status: 404, message:err })
+        // CastError
+        if (err.name === 'CastError') 
+          return next({ status: 404, message: 'Unable to post new article, relating data not found' })
       });
     })
 }

@@ -19,7 +19,9 @@ function getUserProfile (req, res, next) {
       return res.status(200).send(users);
     })
     .catch(err => {
-      return next({ status: 404, message:err })
+      // CastError
+      if (err.name === 'CastError') 
+        return next({ status: 404, message: `User with username '${username}' could not be found` })
     });
 }
 

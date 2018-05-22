@@ -12,15 +12,16 @@ function getComments (req, res, next) {
     });
 }
 
-function deleteComment (req, res, next) {
+function deleteCommentById (req, res, next) {
   const commentId = req.params.comment_id;
   Comment.findByIdAndRemove(commentId)
     .then(comment => {
-      return res.status(200).send(`comment with id ${commentId} has been deleted`);
+      return res.status(200).send(`Comment with Id '${commentId}' has been removed from the db`);
     })
     .catch(err => {
-      // validationError 
-      return next({ status: 404, message:err })
+      // CastError
+      if (err.name === 'CastError') 
+        return next({ status: 404, message: `Comment with Id '${commentId}' could not be found` })
     });
 }
 
@@ -36,8 +37,10 @@ function putCommentVotesById (req, res, next) {
         return res.status(200).send(comment);
       })
       .catch(err => {
-        return next({ status: 404, message:err })
+        // CastError
+        if (err.name === 'CastError') 
+          return next({ status: 404, message: `Comment with Id '${commentId}' could not be found` })
       });
 }
 
-module.exports = { getComments, deleteComment, putCommentVotesById };
+module.exports = { getComments, deleteCommentById, putCommentVotesById };

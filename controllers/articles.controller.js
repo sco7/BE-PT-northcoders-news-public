@@ -19,8 +19,9 @@ function getArticleById (req, res, next) {
       return res.status(200).send(articles);
     })
     .catch(err => {
-      // validationError 
-      return next({ status: 404, message:err })
+      // CastError
+      if (err.name === 'CastError') 
+        return next({ status: 404, message: `Article with Id '${articleId}' could not be found` })
     });
 }
 
@@ -31,7 +32,9 @@ function getCommentsByArticle (req, res, next) {
       return res.status(200).send(comments);
     })
     .catch(err => {
-      return next({ status: 404, message:err })
+      // CastError
+      if (err.name === 'CastError') 
+        return next({ status: 404, message: `Comments with article Id '${articleId}' could not be found` })
     });
 }
 
@@ -50,7 +53,9 @@ function postCommentToArticle (req, res, next) {
         return res.status(200).send(comment);
       })
       .catch(err => {
-        return next({ status: 404, message:err })
+        // CastError
+        if (err.name === 'CastError') 
+          return next({ status: 404, message: 'Unable to post new comment, relating data not found' })
       });
     })
 }
