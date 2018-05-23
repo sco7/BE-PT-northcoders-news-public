@@ -5,7 +5,7 @@ const { Article, Comment, User } = require('../models/index');
 function getArticles (req, res, next) {
   Article.find()
     .then(articles => {
-      return res.status(200).send(articles);
+      return res.status(200).send({articles});
     })
     .catch(err => {
       return next({ message: 'oops internal server error' })
@@ -16,7 +16,7 @@ function getArticleById (req, res, next) {
   const articleId = req.params.article_Id;
   Article.findOne({ _id: articleId })
     .then(articles => {
-      return res.status(200).send(articles);
+      return res.status(200).send({articles});
     })
     .catch(err => {
       // CastError
@@ -29,7 +29,7 @@ function getCommentsByArticle (req, res, next) {
   const articleId = req.params.article_Id;
   Comment.find({ belongs_to: articleId })
     .then(comments => {
-      return res.status(200).send(comments);
+      return res.status(200).send({comments});
     })
     .catch(err => {
       // CastError
@@ -50,7 +50,7 @@ function postCommentToArticle (req, res, next) {
         created_by: userId
       })
       .then(comment => {
-        return res.status(200).send(comment);
+        return res.status(200).send({comment});
       })
       .catch(err => {
         // CastError
@@ -69,7 +69,7 @@ function putArticleVotesById (req, res, next) {
     Article.findByIdAndUpdate(
       articleId, { $inc: { votes: change } }, { new: true })
       .then(article => {
-        return res.status(200).send(article);
+        return res.status(200).send({article});
       })
       .catch(err => {
         return next({ status: 404, message:err })

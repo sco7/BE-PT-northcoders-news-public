@@ -18,6 +18,7 @@ mongoose.connect(dbUrl)
 
 // disconnect from the database
 .then((data) => {
+  console.log(`connected to ${dbUrl}`)
   console.log('db seeded!');
   mongoose.disconnect();
   console.log('db disconnected!');

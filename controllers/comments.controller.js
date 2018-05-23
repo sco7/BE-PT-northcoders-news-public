@@ -5,7 +5,7 @@ const { Comment } = require('../models/index');
 function getComments (req, res, next) {
   Comment.find()
     .then(comments => {
-      return res.status(200).send(comments);
+      return res.status(200).send({comments});
     })
     .catch(err => {
       return next({ message: 'oops internal server error' })
@@ -14,7 +14,7 @@ function getComments (req, res, next) {
 
 function deleteCommentById (req, res, next) {
   const commentId = req.params.comment_id;
-  Comment.findByIdAndRemove(commentId)
+  Comment.findByIdAndRemove({commentId})
     .then(comment => {
       return res.status(200).send(`Comment with Id '${commentId}' has been removed from the db`);
     })
@@ -34,7 +34,7 @@ function putCommentVotesById (req, res, next) {
     Comment.findByIdAndUpdate(
       commentId, { $inc: { votes: change } }, { new: true })
       .then(comment => {
-        return res.status(200).send(comment);
+        return res.status(200).send({comment});
       })
       .catch(err => {
         // CastError

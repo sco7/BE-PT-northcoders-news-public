@@ -1,5 +1,5 @@
 const app = require('./server');
-const PORT = 3000;
+const PORT = 3001;
 
 app.listen(PORT, function(err) {
   if (err) return console.log(err);

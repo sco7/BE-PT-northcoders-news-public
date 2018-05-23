@@ -5,7 +5,7 @@ const { Topic, Article, User } = require('../models/index');
 function getTopics (req, res, next) {
   Topic.find()
     .then(topics => {
-      return res.status(200).send(topics);
+      return res.status(200).send({topics});
     })
     .catch(err => {
       return next({ message: 'oops internal server error' })
@@ -16,7 +16,7 @@ function getArticlesByTopic (req, res, next) {
   const topicId = req.params.topic_id;
   Article.find({ belongs_to: topicId })
     .then(articles => {
-      return res.status(200).send(articles);
+      return res.status(200).send({articles});
     })
     .catch(err => {
       // CastError
@@ -38,7 +38,7 @@ function postArticleToTopic (req, res, next) {
         created_by: userId
       })
       .then(article => {
-        return res.status(200).send(article);
+        return res.status(200).send({article});
       })
       .catch(err => {
         // CastError
@@ -47,6 +47,5 @@ function postArticleToTopic (req, res, next) {
       });
     })
 }
-
 
 module.exports = { getTopics, getArticlesByTopic, postArticleToTopic };

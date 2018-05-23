@@ -13,7 +13,7 @@ app.use(json());
 app.use('/api', apiRouter);
 
 app.use((err, req, res, next) => {
-    if (err.status === 404) res.status(404).send({ err:err.message });
+    if (err.status === 404) res.status(404).send({ err: err.message });
     else res.status(500).send({ err:err.message })
 })
 

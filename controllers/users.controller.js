@@ -5,7 +5,7 @@ const { User } = require('../models/index');
 function getUsers (req, res, next) {
   User.find()
     .then(users => {
-      return res.status(200).send(users);
+      return res.status(200).send({users});
     })
     .catch(err => {
       return next({ message: 'oops internal server error' })
@@ -16,7 +16,7 @@ function getUserProfile (req, res, next) {
   const username = req.params.username;
   User.find({ username: username })
     .then(users => {
-      return res.status(200).send(users);
+      return res.status(200).send({users});
     })
     .catch(err => {
       // CastError
