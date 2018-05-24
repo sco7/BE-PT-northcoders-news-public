@@ -41,11 +41,12 @@ function postArticleToTopic (req, res, next) {
         return res.status(200).send({article});
       })
       .catch(err => {
-        // CastError
-        if (err.name === 'CastError') 
-          return next({ status: 404, message: 'Unable to post new article, relating data not found' })
+        if (err)
+          return next({ status: 404, message: 'Unable to post new article, relating topic not found' })
       });
+      
     })
+    
 }
 
 module.exports = { getTopics, getArticlesByTopic, postArticleToTopic };

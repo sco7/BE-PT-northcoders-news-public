@@ -38,14 +38,40 @@ describe('API endpoints', () => {
       return request
         .get(`/api/topics/${topicDocs[0]._id}/articles`)
           .then(res => {
-            console.log(articleDocs);
+            //console.log(articleDocs);
             expect(res.body.articles.length).to.equal(2);
             expect(res.body.articles[0].title).to.equal('Living in the shadow of a great man');
             expect(res.body.articles[res.body.articles.length - 1].title).to.equal('7 inspirational thought leaders from Manchester UK');
           })
     });
 
+    it('sends an error when the article id cannot be found during a get all articles for a topic request', () => {
+      return request
+        .get(`/api/topics/AAA12345/articles`)
+          .then(res => {
+            expect(res.body.err).to.equal(`Article with topic Id 'AAA12345' could not be found`);
+          })
+    });
 
+    it('posts an article to a topic', () => {
+      return request
+        .post(`/api/topics/${topicDocs[0]._id}/articles`)
+        .send({ "title": "this is my new article title", "body": "This is my new article content" })
+        .then(res => {
+          //console.log(res.body);
+          expect(res.body.article.title).to.equal('this is my new article title')
+        })
+    });
+
+    it('sends an error when the relating topic id cannot be during a post an article to a topic request', () => {
+      return request
+        .post(`/api/topics/BBB12345/articles`)
+        .send({ "title": "this is my new article title", "body": "This is my new article content" })
+        .then(res => {
+          //console.log(res.body);
+          expect(res.body.err).to.equal('Unable to post new article, relating topic not found')
+        })
+    });
 
   });
 });
