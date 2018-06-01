@@ -42,7 +42,7 @@ function postArticleToTopic (req, res, next) {
       })
       .catch(err => {
         if (err)
-          return next({ status: 404, message: 'Unable to post new article, relating topic not found' })
+          return next({ status: 404, message: 'Unable to post a new article, relating topic not found' })
       });
       
     })

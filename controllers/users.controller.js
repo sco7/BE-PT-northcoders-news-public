@@ -16,14 +16,13 @@ function getUserProfile (req, res, next) {
   const username = req.params.username;
   User.find({ username: username })
     .then(users => {
+    if (users.length === 0) return next ({ status: 404, message: `User with username '${username}' could not be found` });
       return res.status(200).send({users});
     })
     .catch(err => {
-      // CastError
-      if (err.name === 'CastError') 
-        return next({ status: 404, message: `User with username '${username}' could not be found` })
+      if (err) 
+        return next({ message: 'oops internal server error' })
     });
 }
-
 
 module.exports = { getUsers, getUserProfile }; 

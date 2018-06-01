@@ -13,7 +13,7 @@ function getArticles (req, res, next) {
 }
 
 function getArticleById (req, res, next) {
-  const articleId = req.params.article_Id;
+  const articleId = req.params.article_id;
   Article.findOne({ _id: articleId })
     .then(articles => {
       return res.status(200).send({articles});
@@ -26,7 +26,7 @@ function getArticleById (req, res, next) {
 }
 
 function getCommentsByArticle (req, res, next) {
-  const articleId = req.params.article_Id;
+  const articleId = req.params.article_id;
   Comment.find({ belongs_to: articleId })
     .then(comments => {
       return res.status(200).send({comments});
@@ -53,9 +53,10 @@ function postCommentToArticle (req, res, next) {
         return res.status(200).send({comment});
       })
       .catch(err => {
-        // CastError
-        if (err.name === 'CastError') 
-          return next({ status: 404, message: 'Unable to post new comment, relating data not found' })
+        // Validation error
+        if (err.name === 'ValidationError') 
+        return next({ message: 'Unable to post a new comment, relating article not found' })
+        //if (comment.length === 0) return next ({ status: 404, message: 'Unable to post a new comment, relating article not found' });
       });
     })
 }
@@ -72,7 +73,9 @@ function putArticleVotesById (req, res, next) {
         return res.status(200).send({article});
       })
       .catch(err => {
-        return next({ status: 404, message:err })
+        // CastError
+        if (err.name === 'CastError') 
+          return next({ status: 404, message: `unable to update the vote, relating article not found` })
       });
 }
 

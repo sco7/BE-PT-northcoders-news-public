@@ -6,9 +6,9 @@ const { getArticles, getCommentsByArticle, getArticleById,
 
 router.get('/', getArticles);
 
-router.get('/:article_Id', getArticleById);
+router.get('/:article_id', getArticleById);
 
-router.get('/:article_Id/comments', getCommentsByArticle)
+router.get('/:article_id/comments', getCommentsByArticle)
 
 router.post('/:article_id/comments', postCommentToArticle)
 
