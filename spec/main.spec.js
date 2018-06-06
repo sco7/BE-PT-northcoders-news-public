@@ -27,10 +27,10 @@ describe('API endpoints', () => {
     it('gets all topics', () => {
       return request
         .get('/api/topics')
-          .then(res => {
-            expect(res.body.topics.length).to.equal(2);
-            expect(res.body.topics[0].title).to.equal('Mitch');
-            expect(res.body.topics[res.body.topics.length - 1].title).to.equal('Cats');
+          .then(({body: {topics}}) => {
+            expect(topics.length).to.equal(2);
+            expect(topics[0].title).to.equal('Mitch');
+            expect(topics[topics.length - 1].title).to.equal('Cats');
           })
     });
 
@@ -53,6 +53,7 @@ describe('API endpoints', () => {
     });
 
     it('posts an article to a topic', () => {
+     // const article = 
       return request
         .post(`/api/topics/${topicDocs[0]._id}/articles`)
           .send({ "title": "this is my new article title", "body": "This is my new article content" })
@@ -119,6 +120,7 @@ describe('API endpoints', () => {
             expect(res.body.articles.title).to.equal('Living in the shadow of a great man');
             expect(res.body.articles).to.have.any.key('belongs_to');
             expect(res.body.articles).to.have.any.key('created_by');
+            // to.have.all.keys([''])
           })
     });
 

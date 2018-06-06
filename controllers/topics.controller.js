@@ -1,7 +1,5 @@
 const { Topic, Article, User } = require('../models/index');
 
-//build functions
-
 function getTopics (req, res, next) {
   Topic.find()
     .then(topics => {

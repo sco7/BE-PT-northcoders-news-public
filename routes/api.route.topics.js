@@ -5,8 +5,9 @@ const { getTopics, getArticlesByTopic, postArticleToTopic } = require('../contro
 
 router.get('/', getTopics);
 
-router.get('/:topic_id/articles', getArticlesByTopic);
+router.route('/:topic_id/articles')
+  .get(getArticlesByTopic)
+  .post(postArticleToTopic);
 
-router.post('/:topic_id/articles', postArticleToTopic);
 
 module.exports = router;

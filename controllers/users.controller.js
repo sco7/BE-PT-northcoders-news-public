@@ -1,7 +1,5 @@
 const { User } = require('../models/index');
 
-//build functions
-
 function getUsers (req, res, next) {
   User.find()
     .then(users => {

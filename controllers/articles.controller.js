@@ -1,7 +1,5 @@
 const { Article, Comment, User } = require('../models/index');
 
-//build functions
-
 function getArticles (req, res, next) {
   Article.find()
     .then(articles => {
@@ -13,15 +11,15 @@ function getArticles (req, res, next) {
 }
 
 function getArticleById (req, res, next) {
-  const articleId = req.params.article_id;
-  Article.findOne({ _id: articleId })
+  const {article_id} = req.params;
+  Article.findOne({ _id: article_id })
     .then(articles => {
       return res.status(200).send({articles});
     })
     .catch(err => {
       // CastError
       if (err.name === 'CastError') 
-        return next({ status: 404, message: `Article with Id '${articleId}' could not be found` })
+        return next({ status: 404, message: `Article with Id '${article_id}' could not be found` })
     });
 }
 
@@ -38,6 +36,8 @@ function getCommentsByArticle (req, res, next) {
     });
 }
 
+
+// refactor to less lines of code 
 function postCommentToArticle (req, res, next) {
   const articleId = req.params.article_id;
   const { comment } = req.body;

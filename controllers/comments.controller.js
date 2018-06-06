@@ -1,7 +1,5 @@
 const { Comment } = require('../models/index');
 
-//build functions
-
 function getComments (req, res, next) {
   Comment.find()
     .then(comments => {

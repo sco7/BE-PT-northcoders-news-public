@@ -1,6 +1,8 @@
-// set the database to test or dev
-if (process.env.NODE_ENV !== 'test') process.env.NODE_ENV = 'dev';
-const dbUrl = `mongodb://localhost/northcoders-news-${process.env.NODE_ENV}`;
+const dbUrl = require('../config/index');
+
+// set the database to test or dev - see config file
+//if (process.env.NODE_ENV !== 'test') process.env.NODE_ENV = 'dev';
+//const dbUrl = `mongodb://localhost/northcoders-news-${process.env.NODE_ENV}`;
 
 // require mongoose to work with db connection
 const mongoose = require('mongoose');
