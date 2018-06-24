@@ -10,7 +10,7 @@ const { seedDB } = require('../seeds/seed');
 const { usersData, topicsData, articlesData, commentsData } = require('../seeds/testData');
 
 describe('API endpoints', () => {
-  // docs will be some of the seeded data for you to use throughout your test suite
+  // these docs are  some of the seeded data for you to use throughout your test suite
   let  userDocs, topicDocs, articleDocs, commentDocs;
 
   before(() => {
@@ -103,7 +103,7 @@ describe('API endpoints', () => {
   });
 
   describe('tests the articles controller on the API', () => {
-    it('gets all topics', () => {
+    it('gets all articles', () => {
       return request
         .get('/api/articles/')
           .then(res => {
@@ -117,9 +117,9 @@ describe('API endpoints', () => {
       return request
         .get(`/api/articles/${articleDocs[0]._id}`)
           .then(res => {
-            expect(res.body.articles.title).to.equal('Living in the shadow of a great man');
-            expect(res.body.articles).to.have.any.key('belongs_to');
-            expect(res.body.articles).to.have.any.key('created_by');
+            expect(res.body.articles[0].title).to.equal('Living in the shadow of a great man');
+            expect(res.body.articles[0]).to.have.any.key('belongs_to');
+            expect(res.body.articles[0]).to.have.any.key('created_by');
             // to.have.all.keys([''])
           })
     });

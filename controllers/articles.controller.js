@@ -1,26 +1,74 @@
+const mongoose = require('mongoose');
 const { Article, Comment, User } = require('../models/index');
 
 function getArticles (req, res, next) {
-  Article.find()
-    .then(articles => {
-      return res.status(200).send({articles});
-    })
-    .catch(err => {
-      return next({ message: 'oops internal server error' })
-    });
+  
+  Article.aggregate([
+    { $lookup: {
+      from: 'comments',
+      localField: '_id',
+      foreignField: 'belongs_to',
+      as: 'comments'
+    }},
+    
+    { $project: {
+      title: '$title',
+      body: '$body',
+      belongs_to: '$belongs_to',  
+      votes: '$votes',
+      created_by: '$created_by',
+      comment_count: {$size: '$comments'}
+    }}
+  ])
+  
+  //Article.find()
+  .then(articles => {
+    return res.status(200).send({articles});
+  })
+  .catch(err => {
+    return next({ message: 'oops internal server error' })
+  });
 }
 
 function getArticleById (req, res, next) {
   const {article_id} = req.params;
-  Article.findOne({ _id: article_id })
+  const ObjectId = mongoose.Types.ObjectId;
+  let cond = (mongoose.Types.ObjectId.isValid(article_id));
+
+  if (cond) {
+
+    Article.aggregate([
+      { $lookup: {
+        from: 'comments',
+        localField: '_id',
+        foreignField: 'belongs_to',
+        as: 'comments'
+      }},
+      
+      { $project: {
+        title: '$title',
+        body: '$body',
+        belongs_to: '$belongs_to',
+        votes: '$votes',
+        created_by: '$created_by',
+        comment_count: {$size: '$comments'}
+      }},
+
+      {
+        $match: { _id: ObjectId(article_id) }
+      }
+    ])
+
+    //Article.findOne()
     .then(articles => {
       return res.status(200).send({articles});
     })
     .catch(err => {
-      // CastError
-      if (err.name === 'CastError') 
-        return next({ status: 404, message: `Article with Id '${article_id}' could not be found` })
+        return next({ message: 'Internal server error' })
     });
+  } else {
+      return next({message: `Article with Id '${(article_id)}' could not be found`})
+  }
 }
 
 function getCommentsByArticle (req, res, next) {
