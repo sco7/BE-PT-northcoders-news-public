@@ -10,14 +10,14 @@ const { seedDB } = require('../seeds/seed');
 const { usersData, topicsData, articlesData, commentsData } = require('../seeds/testData');
 
 describe('API endpoints', () => {
-  // these docs are  some of the seeded data for you to use throughout your test suite
-  let  userDocs, topicDocs, articleDocs, commentDocs;
+  // these docs are some of the seeded data for you to use throughout your test suite
+  let userDocs, topicDocs, articleDocs, commentDocs;
 
   before(() => {
-    return seedDB(userDocs, topicDocs, articleDocs, commentDocs)
+    return seedDB(usersData, topicsData, articlesData, commentsData)
       .then(data => {[commentDocs, articleDocs, topicDocs, userDocs] = data
       })
-  })
+  });
 
   after(() => {
     mongoose.disconnect();

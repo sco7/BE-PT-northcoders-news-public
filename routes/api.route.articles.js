@@ -6,12 +6,14 @@ const { getArticles, getCommentsByArticle, getArticleById,
 
 router.get('/', getArticles);
 
-router.get('/:article_id', getArticleById);
+router.route('/:article_id')
+    .get(getArticleById)
+    .put(putArticleVotesById);
 
-router.get('/:article_id/comments', getCommentsByArticle)
+router.route('/:article_id/comments')
+    .get(getCommentsByArticle)
+    .post(postCommentToArticle);
 
-router.post('/:article_id/comments', postCommentToArticle)
 
-router.put('/:article_id', putArticleVotesById)
 
 module.exports = router;

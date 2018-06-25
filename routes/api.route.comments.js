@@ -6,8 +6,8 @@ const { getComments, deleteCommentById,
 
 router.get('/', getComments);
 
-router.delete('/:comment_id', deleteCommentById);
-
-router.put('/:comment_id', putCommentVotesById);
+router.route('/:comment_id')
+    .delete(deleteCommentById)
+    .put(putCommentVotesById);
 
 module.exports = router;
