@@ -6,7 +6,8 @@ function getTopics (req, res, next) {
       return res.status(200).send({topics});
     })
     .catch(err => {
-      return next({ message: 'oops internal server error' })
+      if (err)
+        return next({ message: 'oops internal server error' });
     });
 }
 
@@ -19,7 +20,7 @@ function getArticlesByTopic (req, res, next) {
     .catch(err => {
       // CastError
       if (err.name === 'CastError') 
-        return next({ status: 404, message: `Article with topic Id '${topicId}' could not be found` })
+        return next({ status: 404, message: `Article with topic Id '${topicId}' could not be found` });
     });
 }
 
@@ -28,22 +29,22 @@ function postArticleToTopic (req, res, next) {
   const { title, body } = req.body;
   User.find()
     .then(users => {
-      const userId = users[0]._id
+      const userId = users[0]._id;
       Article.create({
         title: title,
         body: body,
         belongs_to: topicId,
         created_by: userId
       })
-      .then(article => {
-        return res.status(200).send({article});
-      })
-      .catch(err => {
-        if (err)
-          return next({ status: 404, message: 'Unable to post a new article, relating topic not found' })
-      });
+        .then(article => {
+          return res.status(200).send({article});
+        })
+        .catch(err => {
+          if (err)
+            return next({ status: 404, message: 'Unable to post a new article, relating topic not found' });
+        });
       
-    })
+    });
     
 }
 
