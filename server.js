@@ -18,8 +18,8 @@ const apiRouter = require('./routes/api.route');
 const cors = require('cors');
 
 app.use(json());
-app.use('/api', apiRouter);
 app.use(cors());
+app.use('/api', apiRouter);
 
 app.use((err, req, res, next) => {
   if (err.status === 404) res.status(404).send({ err: err.message });
