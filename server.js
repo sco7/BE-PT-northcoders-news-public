@@ -2,9 +2,10 @@ if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev';
 if (process.env.NODE_ENV !== 'production') require('dotenv').config({
   path: `./.${process.env.NODE_ENV}.env`
 });
-// require ('dotenv').config({
-//   path:`./environments/.${process.env.NODE_ENV}.env`
-// });
+
+require ('dotenv').config({
+  path:`./environments/.${process.env.NODE_ENV}.env`
+});
 
 const mongoose = require('mongoose');
 
