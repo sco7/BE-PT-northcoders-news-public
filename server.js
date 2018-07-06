@@ -3,9 +3,11 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config({
   path: `./.${process.env.NODE_ENV}.env`
 });
 
-// require ('dotenv').config({
-//   path:`./environments/.${process.env.NODE_ENV}.env`
-// });
+// dotenv must be required in this file when running locally, 
+// this may need commenting out when hosting on Heroku.
+require ('dotenv').config({
+  path:`./environments/.${process.env.NODE_ENV}.env`
+});
 
 const mongoose = require('mongoose');
 

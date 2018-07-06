@@ -14,6 +14,4 @@ router.route('/:article_id/comments')
   .get(getCommentsByArticle)
   .post(postCommentToArticle);
 
-
-
 module.exports = router;

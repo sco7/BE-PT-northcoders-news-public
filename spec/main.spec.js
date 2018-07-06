@@ -213,7 +213,7 @@ describe('API endpoints', () => {
         .delete(`/api/comments/${commentDocs[0]._id}`)
         .then(res => {
           //console.log(commentDocs.length);
-          expect(res.text).to.equal(`Comment with Id '${commentDocs[0]._id}' has been removed from the db`);
+          expect(res.text).to.equal('Comment has been removed from the db');
           expect(res.statusCode).to.equal(200);
           expect(commentDocs.length).to.equal(8);
         });
@@ -223,7 +223,7 @@ describe('API endpoints', () => {
       return request
         .delete('/api/comments/AAA12345/')
         .then(res => {
-          expect(res.body.err).to.equal('Comment with Id \'AAA12345\' could not be found');
+          expect(res.body.err).to.equal('Comment could not be found');
           expect(commentDocs.length).to.equal(8);
         });
     });
