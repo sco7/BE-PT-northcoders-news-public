@@ -27,7 +27,7 @@ function deleteCommentById (req, res, next) {
   const comment = req.params.comment_id;
   Comment.findByIdAndRemove(comment)
     .then(comment => {
-      return res.status(200).send(`Comment has been removed from the db`);
+      return res.status(200).send('Comment has been removed from the db');
     })
     .catch(err => {
       // CastError
