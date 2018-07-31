@@ -53,7 +53,6 @@ describe('API endpoints', () => {
     });
 
     it('posts an article to a topic', () => {
-      // const article = 
       return request
         .post(`/api/topics/${topicDocs[0]._id}/articles`)
         .send({ 'title': 'this is my new article title', 'body': 'This is my new article content' })
@@ -120,7 +119,6 @@ describe('API endpoints', () => {
           expect(res.body.articles[0].title).to.equal('Living in the shadow of a great man');
           expect(res.body.articles[0]).to.have.any.key('belongs_to');
           expect(res.body.articles[0]).to.have.any.key('created_by');
-          // to.have.all.keys([''])
         });
     });
 
@@ -190,7 +188,6 @@ describe('API endpoints', () => {
       return request
         .put('/api/articles/BBB12345/?vote=down')
         .then(res => {
-          //console.log(res.body.err);
           expect(res.body.err).to.equal('unable to update the vote, relating article not found');
         });
     });
@@ -201,7 +198,6 @@ describe('API endpoints', () => {
       return request
         .get('/api/comments/')
         .then(res => {
-          //console.log(res.body.comments);
           expect(res.body.comments.length).to.equal(9);
           expect(res.body.comments[0].votes).to.equal(7);
           expect(res.body.comments[res.body.comments.length - 1].votes).to.equal(0);
@@ -212,7 +208,6 @@ describe('API endpoints', () => {
       return request
         .delete(`/api/comments/${commentDocs[0]._id}`)
         .then(res => {
-          //console.log(commentDocs.length);
           expect(res.text).to.equal('Comment has been removed from the db');
           expect(res.statusCode).to.equal(200);
           expect(commentDocs.length).to.equal(8);
@@ -240,7 +235,6 @@ describe('API endpoints', () => {
       return request
         .put(`/api/comments/${commentDocs[1]._id}?vote=down`)
         .then(res => {
-          // reduces the previous increment by 1 back to 0
           expect(res.body.comment.votes).to.equal(19);
         });
     });

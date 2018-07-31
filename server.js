@@ -4,13 +4,12 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config({
 });
 
 // dotenv must be required in this file when running locally, 
-// this may need commenting out when hosting on Heroku.
-// require ('dotenv').config({
-//   path:`./environments/.${process.env.NODE_ENV}.env`
-// });
+// this will need commenting out when hosting on Heroku.
+require ('dotenv').config({
+  path:`./environments/.${process.env.NODE_ENV}.env`
+});
 
 const mongoose = require('mongoose');
-
 mongoose.connect(process.env.DB_URI);
 
 const express = require('express');
@@ -21,6 +20,7 @@ const cors = require('cors');
 
 app.use(json());
 app.use(cors());
+app.use(express.static('public'));
 app.use('/api', apiRouter);
 
 app.use((err, req, res, next) => {

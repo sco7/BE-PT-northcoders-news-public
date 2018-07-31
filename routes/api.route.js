@@ -5,8 +5,9 @@ const articles = require('./api.route.articles');
 const comments = require('./api.route.comments');
 const topics = require('./api.route.topics');
 const users = require('./api.route.users');
+const path = require('path');
 
-//router.use('/.', homepage);
+router.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'public/index.html')));
 
 router.use('/articles', articles);
 

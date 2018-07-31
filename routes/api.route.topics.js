@@ -9,5 +9,4 @@ router.route('/:topic_id/articles')
   .get(getArticlesByTopic)
   .post(postArticleToTopic);
 
-
 module.exports = router;

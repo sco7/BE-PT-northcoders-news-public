@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 
-// for heroku deployment
-
+// required for heroku deployment
 const app = require('./server');
 const PORT = process.env.NODE_ENV === 'production'? process.env.PORT : 3001;
 

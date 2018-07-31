@@ -87,7 +87,7 @@ function getCommentsByArticle (req, res, next) {
 }
 
 
-// refactor to less lines of code 
+
 function postCommentToArticle (req, res, next) {
   const articleId = req.params.article_id;
   const { comment } = req.body;
@@ -106,7 +106,6 @@ function postCommentToArticle (req, res, next) {
         // Validation error
           if (err.name === 'ValidationError') 
             return next({ message: 'Unable to post a new comment, relating article not found' });
-        //if (comment.length === 0) return next ({ status: 404, message: 'Unable to post a new comment, relating article not found' });
         });
     });
 }
