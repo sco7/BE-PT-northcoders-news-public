@@ -47,7 +47,7 @@
     <h3>DELETE
       <code>/api/comments/:comment_id</code>
     </h3>
-    <p>Get all the comments</p>
+    <p>Delete an individual comment</p>
     <h3>PUT
       <code>/api/comment/:comment_id</code>
     </h3>
@@ -61,16 +61,17 @@
   </h3>
   <p>Get all the topics</p>
   <h3>GET
-    <code>/api/topics/:topic/articles</code>
+    <code>/api/topics/:topic_id/articles</code>
   </h3>
   <p>Return all the articles for a certain topic</p>
-  <h3>PUT
-    <code>/api/topics/:topic/articles</code>
+  <h3>POST
+    <code>/api/topics/:topic_id/articles</code>
   </h3>
-  <p>Increment or Decrement the votes of an article by one. This route requires a
-    <code>vote</code> query of 'up' or 'down'
+  <p>Add a new article to a topic. This route requires a JSON
+    <code>body</code> with a
+    <code>title and body</code> key and value pair
     <br> e.g:
-    <code>http://northcoders-news-api.herokuapp.com/api/articles/:article_id?vote=up</code>
+    <code>{ "title": "this is my new article title", "body": "This is my new article content"}</code>
   </p>
   <h3>GET
     <code>/api/users/</code>
@@ -81,5 +82,4 @@
   </h3>
   <p>Get an individual user</p>
 </body>
-
 </html>

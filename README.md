@@ -10,9 +10,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Prerequisites
 
-* NodeJS
-* NPM
-* MongoDB
+* NodeJS (v 9.9.0)
+* NPM (v 5.6.0)
+* MongoDB (v 3.4.10)
 
 ## Installing
 
@@ -30,15 +30,15 @@ Start MongoDB
 Seed the dev data
 ```npm run seed-dev```
 
+Run the server
+```npm run Dev```
+
 ## Running the tests
 
 How to run the tests
 
 Start MongoDB
 ```mongod```
-
-Seed the test data
-```npm run seed-test```
 
 Run the tests
 ```npm test```

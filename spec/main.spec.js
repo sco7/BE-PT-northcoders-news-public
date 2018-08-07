@@ -109,6 +109,7 @@ describe('API endpoints', () => {
           expect(res.body.articles.length).to.equal(5);
           expect(res.body.articles[0].title).to.equal('Living in the shadow of a great man');
           expect(res.body.articles[res.body.articles.length - 1].title).to.equal('this is my new article title');
+          expect(res.body.articles[0].comment_count).to.equal(2);
         });
     });
 
